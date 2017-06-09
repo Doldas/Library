@@ -6,9 +6,11 @@ namespace LibraryMVC.Models
 {
     public class BookInformation
     {
-        [Key]
+        
         //[Key, ForeignKey("Book")] 1 - 1
+        [Key]
         public int ID { get; set; }
+        public string ISBN { get; set; }
         public string Title { get; set; }
         public Category Category { get; set; }
         public string Description { get; set; }

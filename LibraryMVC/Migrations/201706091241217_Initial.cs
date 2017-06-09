@@ -24,6 +24,7 @@ namespace LibraryMVC.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
+                        ISBN = c.String(),
                         Title = c.String(),
                         Category = c.Int(nullable: false),
                         Description = c.String(),
@@ -84,35 +85,35 @@ namespace LibraryMVC.Migrations
                 .Index(t => t.Author_ID);
             
             CreateTable(
-                "dbo.LoanBooks",
+                "dbo.BookLoan",
                 c => new
                     {
-                        Loan_ID = c.Int(nullable: false),
-                        Book_ID = c.Int(nullable: false),
+                        BookRefID = c.Int(nullable: false),
+                        LoanRefID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.Loan_ID, t.Book_ID })
-                .ForeignKey("dbo.Loans", t => t.Loan_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Books", t => t.Book_ID, cascadeDelete: true)
-                .Index(t => t.Loan_ID)
-                .Index(t => t.Book_ID);
+                .PrimaryKey(t => new { t.BookRefID, t.LoanRefID })
+                .ForeignKey("dbo.Books", t => t.BookRefID, cascadeDelete: true)
+                .ForeignKey("dbo.Loans", t => t.LoanRefID, cascadeDelete: true)
+                .Index(t => t.BookRefID)
+                .Index(t => t.LoanRefID);
             
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.BookLoan", "LoanRefID", "dbo.Loans");
+            DropForeignKey("dbo.BookLoan", "BookRefID", "dbo.Books");
             DropForeignKey("dbo.Loans", "LoanTakerID", "dbo.LoanTakers");
-            DropForeignKey("dbo.LoanBooks", "Book_ID", "dbo.Books");
-            DropForeignKey("dbo.LoanBooks", "Loan_ID", "dbo.Loans");
             DropForeignKey("dbo.Books", "BookInformationID", "dbo.BookInformations");
             DropForeignKey("dbo.BookInformationAuthors", "Author_ID", "dbo.Authors");
             DropForeignKey("dbo.BookInformationAuthors", "BookInformation_ID", "dbo.BookInformations");
-            DropIndex("dbo.LoanBooks", new[] { "Book_ID" });
-            DropIndex("dbo.LoanBooks", new[] { "Loan_ID" });
+            DropIndex("dbo.BookLoan", new[] { "LoanRefID" });
+            DropIndex("dbo.BookLoan", new[] { "BookRefID" });
             DropIndex("dbo.BookInformationAuthors", new[] { "Author_ID" });
             DropIndex("dbo.BookInformationAuthors", new[] { "BookInformation_ID" });
             DropIndex("dbo.Loans", new[] { "LoanTakerID" });
             DropIndex("dbo.Books", new[] { "BookInformationID" });
-            DropTable("dbo.LoanBooks");
+            DropTable("dbo.BookLoan");
             DropTable("dbo.BookInformationAuthors");
             DropTable("dbo.LoanTakers");
             DropTable("dbo.Loans");

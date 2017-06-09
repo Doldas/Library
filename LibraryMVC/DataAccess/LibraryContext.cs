@@ -12,9 +12,10 @@ namespace LibraryMVC.DataAccess
         public DbSet<Loan> Loans { get; set; }
         public DbSet<LoanTaker> LoanTakers { get; set; }
 
-        /*
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
             //One-To-Many
             modelBuilder.Entity<Book>()
                 .HasRequired<BookInformation>(book => book.BookInformation)
@@ -30,7 +31,11 @@ namespace LibraryMVC.DataAccess
                     booksloans.MapRightKey("LoanRefID");
                     booksloans.ToTable("BookLoan");
                 });
+             
+
+            //modelBuilder.Entity<Book>().MapToStoredProcedures(); //SQL codes will be disabled
         }
-         */
+         
+        
     }
 }
